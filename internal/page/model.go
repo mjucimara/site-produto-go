@@ -1,6 +1,8 @@
 package page
 
+import tpl "site-produto/internal/infra/template"
+
 type Page struct {
-	Title       string
+	tpl.PageData
 	Description string
 }

@@ -1,8 +1,8 @@
-{{ define "content" }}
-<h1>{{ .Title }}</h1>
-<p>{{ .Description }}</p>
+{{ define "home" }}
+  {{ template "layout" . }}
 {{ end }}
 
-{{ define "home" }}
-{{ template "layout" . }}
+{{ define "content" }}
+  <h1>{{ .Title }}</h1>
+  <p>{{ .Description }}</p>
 {{ end }}

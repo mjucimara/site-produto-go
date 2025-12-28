@@ -1,14 +1,14 @@
 package page
 
-type Service struct{}
+import tpl "site-produto/internal/infra/template"
 
-func NewService() *Service {
-	return &Service{}
-}
+type Service struct{}
 
 func (s *Service) Home() Page {
 	return Page{
-		Title:       "Site Produto",
+		PageData: tpl.PageData{
+			Title: "Site Produto",
+		},
 		Description: "Este é exatamente o site que você vai receber.",
 	}
 }

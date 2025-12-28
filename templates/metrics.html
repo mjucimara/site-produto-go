@@ -1,0 +1,16 @@
+{{ define "metrics" }}
+  {{ template "layout" . }}
+{{ end }}
+
+{{ define "content" }}
+  <h1>Métricas</h1>
+
+  <ul>
+    {{ range .Metrics }}
+      <li>
+        <strong>{{ .Label }}</strong>: {{ .Value }}<br>
+        <small>{{ .Note }}</small>
+      </li>
+    {{ end }}
+  </ul>
+{{ end }}
