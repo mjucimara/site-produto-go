@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	httpinfra "site-produto/internal/infra/http"
+	tpl "site-produto/internal/infra/template"
 	"site-produto/internal/page"
 	"site-produto/pkg/config"
 )
@@ -13,20 +14,26 @@ func main() {
 	// 1. Carregar configuração
 	cfg := config.Load()
 
-	// 2. Inicializar serviços de domínio
+	// 2. Inicializar renderer (infra de apresentação)
+	renderer, err := tpl.NewRenderer("templates")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 3. Inicializar serviços de domínio
 	pageService := page.NewService()
 
-	// 3. Inicializar handlers (tradução HTTP -> domínio)
-	pageHandler := page.NewHandler(pageService)
+	// 4. Inicializar handlers (HTTP -> domínio -> renderer)
+	pageHandler := page.NewHandler(pageService, renderer)
 
-	// 4. Configurar roteamento HTTP explícito
+	// 5. Configurar roteamento HTTP explícito
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", pageHandler.Home)
 
-	// 5. Criar servidor HTTP (infra pura)
+	// 6. Criar servidor HTTP (infra pura)
 	server := httpinfra.NewServer(cfg.Addr, mux)
 
-	// 6. Subir servidor
+	// 7. Subir servidor
 	log.Println("listening on", cfg.Addr)
 	log.Fatal(server.ListenAndServe())
 }
