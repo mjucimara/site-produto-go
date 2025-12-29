@@ -33,3 +33,36 @@ func main() {
 	// 3. Serviços de domínio
 	// ─────────────────────────────────────────────
 	pageService := &page.Service{}
+	metricsService := &metrics.Service{}
+
+	// ─────────────────────────────────────────────
+	// 4. Handlers
+	// ─────────────────────────────────────────────
+	pageHandler := page.NewHandler(pageService, renderer)
+	metricsHandler := metrics.NewHandler(metricsService, renderer)
+	healthHandler := health.NewHandler()
+
+	// ─────────────────────────────────────────────
+	// 5. Roteamento HTTP
+	// ─────────────────────────────────────────────
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", pageHandler.Home)
+	mux.HandleFunc("/metrics", metricsHandler.View)
+	mux.HandleFunc("/health", healthHandler.Check)
+
+	// arquivos estáticos
+	fs := http.FileServer(http.Dir("static"))
+	mux.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	// ─────────────────────────────────────────────
+	// 6. Servidor HTTP
+	// ─────────────────────────────────────────────
+	server := httpinfra.NewServer(cfg.Addr, mux)
+
+	// ─────────────────────────────────────────────
+	// 7. Inicialização
+	// ─────────────────────────────────────────────
+	log.Println("listening on", cfg.Addr)
+	log.Fatal(server.ListenAndServe())
+}
