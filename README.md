@@ -1,3 +1,5 @@
+[![CI](https://github.com/mjucimara/site-produto-go/actions/workflows/ci.yml/badge.svg)](https://github.com/mjucimara/site-produto-go/actions/workflows/ci.yml)
+
 # Site Produto
 
 Aplicação web em Go, minimalista e idiomática, voltada para divulgação de serviços, com templates HTML, assets estáticos e deploy via systemd em Fedora Atomic.
